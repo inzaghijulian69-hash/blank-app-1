@@ -13,26 +13,18 @@ mode = st.sidebar.selectbox(
 )
 
 if mode == "🌙 Dark Mode":
-    GRADIENT = """
-        linear-gradient(-45deg,
-        #020617,
-        #1e1b4b,
-        #0f172a,
-        #164e63)
-    """
-    TEXT_MAIN = "#e5e7eb"
-    LABEL_COLOR = "#38bdf8"
-    TITLE_COLOR = "#22d3ee"
-    SUBTITLE_COLOR = "#a5b4fc"
-    PRIMARY = "#22d3ee"
-    GRID_COLOR = "#475569"
+    ...
+    INPUT_TEXT_COLOR = "#ffffff"
+    INPUT_BG = "#020617"
+    INPUT_BORDER = "#22d3ee"
+    GLOW = "0 0 10px rgba(34, 211, 238, 0.6)"
 else:
-    GRADIENT = """
-        linear-gradient(-45deg,
-        #dbeafe,
-        #ede9fe,
-        #ffffff,
-        #e0f2fe)
+    ...
+    INPUT_TEXT_COLOR = "#000000"
+    INPUT_BG = "#ffffff"
+    INPUT_BORDER = "#cbd5e1"
+    GLOW = "none"
+
     """
     TEXT_MAIN = "#000000"
     LABEL_COLOR = "#1d4ed8"
@@ -41,69 +33,38 @@ else:
     PRIMARY = "#2563eb"
     GRID_COLOR = "#cbd5e1"
 
-# =========================
-# CSS GRADIENT ANIMASI
-# =========================
 st.markdown(
     f"""
     <style>
-    .stApp {{
-        background: {GRADIENT};
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        color: {TEXT_MAIN};
-    }}
+    /* =========================
+       INPUT STYLE + GLOW
+       ========================= */
 
-    @keyframes gradientBG {{
-        0% {{ background-position: 0% 50%; }}
-        50% {{ background-position: 100% 50%; }}
-        100% {{ background-position: 0% 50%; }}
-    }}
-
-    h1 {{
-        color: {TITLE_COLOR};
-        font-weight: 900;
-        text-align: center;
-        letter-spacing: 1px;
-    }}
-
-    h2, h3 {{
-        color: {SUBTITLE_COLOR};
-        font-weight: 700;
-    }}
-
-    label {{
-        color: {LABEL_COLOR} !important;
+    input, textarea {{
+        background-color: {INPUT_BG} !important;
+        color: {INPUT_TEXT_COLOR} !important;
+        border: 2px solid {INPUT_BORDER} !important;
+        border-radius: 10px;
         font-weight: 600;
+        transition: all 0.3s ease;
     }}
 
-    input {{
-        color: #000000 !important;
-        font-weight: 500;
+    /* Glow saat hover */
+    input:hover, textarea:hover {{
+        box-shadow: {GLOW};
     }}
 
-    .stButton > button {{
-        background: linear-gradient(90deg, #2563eb, #7c3aed);
-        color: white;
-        border-radius: 16px;
-        font-weight: bold;
-        padding: 0.7rem 1.6rem;
-        box-shadow: 0 8px 18px rgba(0,0,0,0.2);
-        transition: 0.3s ease;
-    }}
-
-    .stButton > button:hover {{
-        transform: scale(1.05);
-        box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-    }}
-
-    .stDataFrame td, .stDataFrame th {{
-        color: {TEXT_MAIN};
+    /* Glow saat focus */
+    input:focus, textarea:focus {{
+        outline: none !important;
+        box-shadow: {GLOW};
+        border-color: {PRIMARY} !important;
     }}
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 # =========================
 # JUDUL
