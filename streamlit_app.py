@@ -5,56 +5,40 @@ import sympy as sp
 import matplotlib.pyplot as plt
 
 # =========================
-# CSS CUSTOM THEME
+# CSS CUSTOM
 # =========================
-PRIMARY_COLOR = "#4F46E5"
+st.markdown("""
+<style>
+h1, h2, h3 {
+    color: #2563EB;
+}
 
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-color: #ffffff;
-    }}
+.stButton > button {
+    background-color: #2563EB;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+}
 
-    h1, h2, h3 {{
-        color: {PRIMARY_COLOR};
-    }}
+.stButton > button:hover {
+    background-color: #1D4ED8;
+}
 
-    .stButton > button {{
-        background-color: {PRIMARY_COLOR};
-        color: white;
-        border-radius: 8px;
-        font-weight: bold;
-    }}
-
-    .stButton > button:hover {{
-        background-color: #4338CA;
-        color: white;
-    }}
-
-    .dataframe {{
-        border: 1px solid {PRIMARY_COLOR};
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+</style>
+""", unsafe_allow_html=True)
 
 # =========================
-# Judul Aplikasi
+# JUDUL
 # =========================
 st.title("Newton-Raphson SPNL")
 st.markdown("### Sistem Persamaan Non Linier (2 Variabel)")
 
 # =========================
-# Input Persamaan
+# INPUT
 # =========================
 f1_input = st.text_input("Masukkan f1(x, y)", "x**2 + y**2 - 4")
 f2_input = st.text_input("Masukkan f2(x, y)", "x - y - 1")
 
-# =========================
-# Input Parameter
-# =========================
 col1, col2 = st.columns(2)
 with col1:
     x0 = st.number_input("Tebakan awal x₀", value=1.0)
@@ -65,12 +49,11 @@ maks_iterasi = st.number_input("Maksimum Iterasi", value=10)
 toleransi = st.number_input("Toleransi Error", value=0.0001)
 
 # =========================
-# Tombol Hitung
+# PROSES
 # =========================
 if st.button("Hitung"):
     try:
         x, y = sp.symbols('x y')
-
         f1 = sp.sympify(f1_input)
         f2 = sp.sympify(f2_input)
 
@@ -109,36 +92,58 @@ if st.button("Hitung"):
             data_iterasi,
             columns=["Iterasi", "x", "y", "Error"]
         )
-
-        st.subheader("Tabel Iterasi Newton-Raphson")
+        st.subheader("Tabel Iterasi")
         st.dataframe(df)
 
         st.success(f"Solusi Konvergen: x = {xn[0]:.6f}, y = {xn[1]:.6f}")
 
         # =========================
-        # GRAFIK KONVERGENSI (WARNA SINKRON)
+        # GRAFIK VARIATIF
         # =========================
         st.subheader("Grafik Konvergensi Error")
 
         fig, ax = plt.subplots()
+
+        iterations = range(1, len(error_list) + 1)
+
+        # Garis utama
         ax.plot(
+            iterations,
             error_list,
-            marker="o",
-            color=PRIMARY_COLOR,
-            linewidth=2
+            linestyle='-',
+            linewidth=2,
+            color='#2563EB',
+            label='Error'
         )
 
-        ax.set_xlabel("Iterasi", color=PRIMARY_COLOR)
-        ax.set_ylabel("Error", color=PRIMARY_COLOR)
-        ax.set_title("Grafik Konvergensi Newton-Raphson", color=PRIMARY_COLOR)
+        # Titik iterasi (warna berbeda)
+        ax.scatter(
+            iterations,
+            error_list,
+            color='#F59E0B',
+            s=60,
+            zorder=5,
+            label='Iterasi'
+        )
 
-        ax.tick_params(axis='x', colors=PRIMARY_COLOR)
-        ax.tick_params(axis='y', colors=PRIMARY_COLOR)
+        # Highlight iterasi terakhir
+        ax.scatter(
+            iterations[-1],
+            error_list[-1],
+            color='#DC2626',
+            s=100,
+            label='Konvergen'
+        )
 
-        ax.grid(True, linestyle="--", alpha=0.5)
+        ax.set_xlabel("Iterasi")
+        ax.set_ylabel("Error")
+        ax.set_title("Konvergensi Metode Newton-Raphson")
+
+        ax.grid(True, linestyle='--', alpha=0.5)
+        ax.legend()
 
         st.pyplot(fig)
 
     except Exception as e:
-        st.error("Terjadi kesalahan pada perhitungan")
+        st.error("Terjadi kesalahan dalam perhitungan")
         st.write(e)
