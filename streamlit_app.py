@@ -5,6 +5,42 @@ import sympy as sp
 import matplotlib.pyplot as plt
 
 # =========================
+# CSS CUSTOM THEME
+# =========================
+PRIMARY_COLOR = "#4F46E5"
+
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-color: #ffffff;
+    }}
+
+    h1, h2, h3 {{
+        color: {PRIMARY_COLOR};
+    }}
+
+    .stButton > button {{
+        background-color: {PRIMARY_COLOR};
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+    }}
+
+    .stButton > button:hover {{
+        background-color: #4338CA;
+        color: white;
+    }}
+
+    .dataframe {{
+        border: 1px solid {PRIMARY_COLOR};
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# =========================
 # Judul Aplikasi
 # =========================
 st.title("Newton-Raphson SPNL")
@@ -33,17 +69,11 @@ toleransi = st.number_input("Toleransi Error", value=0.0001)
 # =========================
 if st.button("Hitung"):
     try:
-        # =========================
-        # Definisi simbol
-        # =========================
         x, y = sp.symbols('x y')
 
         f1 = sp.sympify(f1_input)
         f2 = sp.sympify(f2_input)
 
-        # =========================
-        # Jacobian
-        # =========================
         J = sp.Matrix([
             [sp.diff(f1, x), sp.diff(f1, y)],
             [sp.diff(f2, x), sp.diff(f2, y)]
@@ -51,9 +81,6 @@ if st.button("Hitung"):
 
         F = sp.Matrix([f1, f2])
 
-        # =========================
-        # Iterasi Newton-Raphson
-        # =========================
         xn = np.array([x0, y0], dtype=float)
 
         data_iterasi = []
@@ -61,7 +88,7 @@ if st.button("Hitung"):
 
         for i in range(1, maks_iterasi + 1):
             J_val = np.array(J.subs({x: xn[0], y: xn[1]}), dtype=float)
-            F_val = np.array(F.subs({x: xn[0], y: xn[1]}), dtype=float).astype(float).flatten()
+            F_val = np.array(F.subs({x: xn[0], y: xn[1]}), dtype=float).flatten()
 
             delta = np.linalg.solve(J_val, -F_val)
             xn_new = xn + delta
@@ -72,12 +99,11 @@ if st.button("Hitung"):
             data_iterasi.append([i, xn_new[0], xn_new[1], error])
 
             xn = xn_new
-
             if error < toleransi:
                 break
 
         # =========================
-        # Tabel Iterasi
+        # TABEL ITERASI
         # =========================
         df = pd.DataFrame(
             data_iterasi,
@@ -87,22 +113,29 @@ if st.button("Hitung"):
         st.subheader("Tabel Iterasi Newton-Raphson")
         st.dataframe(df)
 
-        # =========================
-        # Solusi Akhir
-        # =========================
         st.success(f"Solusi Konvergen: x = {xn[0]:.6f}, y = {xn[1]:.6f}")
 
         # =========================
-        # Grafik Konvergensi
+        # GRAFIK KONVERGENSI (WARNA SINKRON)
         # =========================
         st.subheader("Grafik Konvergensi Error")
 
         fig, ax = plt.subplots()
-        ax.plot(error_list, marker='o')
-        ax.set_xlabel("Iterasi")
-        ax.set_ylabel("Error")
-        ax.set_title("Grafik Konvergensi Newton-Raphson")
-        ax.grid(True)
+        ax.plot(
+            error_list,
+            marker="o",
+            color=PRIMARY_COLOR,
+            linewidth=2
+        )
+
+        ax.set_xlabel("Iterasi", color=PRIMARY_COLOR)
+        ax.set_ylabel("Error", color=PRIMARY_COLOR)
+        ax.set_title("Grafik Konvergensi Newton-Raphson", color=PRIMARY_COLOR)
+
+        ax.tick_params(axis='x', colors=PRIMARY_COLOR)
+        ax.tick_params(axis='y', colors=PRIMARY_COLOR)
+
+        ax.grid(True, linestyle="--", alpha=0.5)
 
         st.pyplot(fig)
 
