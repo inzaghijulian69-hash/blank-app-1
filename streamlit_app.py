@@ -1,16 +1,17 @@
 import streamlit as st
-import matplotlib.pyplot as plt
+import pandas as pd
 
-st.title("Aplikasi SPNL Newton-Raphson")
+st.title("Newton-Raphson SPNL")
 
 f1 = st.text_input("f1(x, y)")
 f2 = st.text_input("f2(x, y)")
 
 if st.button("Hitung"):
-    error = [1, 0.3, 0.1, 0.01, 0.001]
-
-    fig, ax = plt.subplots()
-    ax.plot(error)
-    ax.set_xlabel("Iterasi")
-    ax.set_ylabel("Error")
-    st.pyplot(fig)
+    data = {
+        "Iterasi": [1, 2, 3],
+        "x": [1.0, 1.2, 1.25],
+        "y": [2.0, 2.1, 2.12],
+        "Error": [0.5, 0.1, 0.01]
+    }
+    df = pd.DataFrame(data)
+    st.table(df)
