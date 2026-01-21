@@ -16,19 +16,21 @@ if mode == "🌙 Dark Mode":
     BG_COLOR = "#0f172a"
     CARD_COLOR = "#020617"
     TEXT_COLOR = "#e5e7eb"
+    LABEL_COLOR = "#e5e7eb"
     PRIMARY = "#22d3ee"
     GRID_COLOR = "#334155"
     SHADOW = "none"
 else:
     BG_COLOR = "#f8fafc"
     CARD_COLOR = "#ffffff"
-    TEXT_COLOR = "#1f2937"
+    TEXT_COLOR = "#000000"       # HITAM PEKAT
+    LABEL_COLOR = "#000000"      # LABEL HITAM
     PRIMARY = "#2563eb"
     GRID_COLOR = "#cbd5e1"
     SHADOW = "0 4px 10px rgba(0,0,0,0.08)"
 
 # =========================
-# CSS DINAMIS (RAPI & JELAS)
+# CSS DINAMIS (TEKS JELAS)
 # =========================
 st.markdown(
     f"""
@@ -38,12 +40,18 @@ st.markdown(
         color: {TEXT_COLOR};
     }}
 
+    /* Judul */
     h1, h2, h3 {{
         color: {PRIMARY};
         font-weight: 700;
     }}
 
-    /* Card Container */
+    /* Semua teks umum */
+    p, span, div {{
+        color: {TEXT_COLOR};
+    }}
+
+    /* Card */
     .card {{
         background-color: {CARD_COLOR};
         padding: 1.5rem;
@@ -52,29 +60,35 @@ st.markdown(
         margin-bottom: 1.5rem;
     }}
 
-    /* Input label */
+    /* Label input */
     label {{
+        color: {LABEL_COLOR} !important;
         font-weight: 600;
-        color: {TEXT_COLOR};
+    }}
+
+    /* Input text & number */
+    input {{
+        color: #000000 !important;
     }}
 
     /* Button */
     .stButton > button {{
         background-color: {PRIMARY};
-        color: white;
+        color: white !important;
         border-radius: 10px;
         font-weight: bold;
         padding: 0.6rem 1.2rem;
-    }}
-
-    .stButton > button:hover {{
-        opacity: 0.9;
     }}
 
     /* Dataframe */
     .stDataFrame {{
         border-radius: 12px;
         box-shadow: {SHADOW};
+    }}
+
+    /* Dataframe text */
+    .stDataFrame td, .stDataFrame th {{
+        color: {TEXT_COLOR};
     }}
     </style>
     """,
