@@ -26,6 +26,8 @@ if mode == "🌙 Dark Mode":
     SUBTITLE_COLOR = "#a5b4fc"
     PRIMARY = "#22d3ee"
     GRID_COLOR = "#475569"
+    INPUT_TEXT_COLOR = "#ffffff"   # 👈 PUTIH
+    INPUT_BG = "#020617"
 else:
     GRADIENT = """
         linear-gradient(-45deg,
@@ -40,6 +42,9 @@ else:
     SUBTITLE_COLOR = "#7c3aed"
     PRIMARY = "#2563eb"
     GRID_COLOR = "#cbd5e1"
+    INPUT_TEXT_COLOR = "#000000"   # 👈 HITAM
+    INPUT_BG = "#ffffff"
+
 
 # =========================
 # CSS GRADIENT ANIMASI
@@ -64,7 +69,6 @@ st.markdown(
         color: {TITLE_COLOR};
         font-weight: 900;
         text-align: center;
-        letter-spacing: 1px;
     }}
 
     h2, h3 {{
@@ -77,9 +81,19 @@ st.markdown(
         font-weight: 600;
     }}
 
-    input {{
-        color: #000000 !important;
-        font-weight: 500;
+    /* =========================
+       INPUT TEXT COLOR FIX
+       ========================= */
+    input, textarea {{
+        background-color: {INPUT_BG} !important;
+        color: {INPUT_TEXT_COLOR} !important;
+        font-weight: 600;
+        border-radius: 10px;
+    }}
+
+    /* Placeholder */
+    input::placeholder {{
+        color: #94a3b8;
     }}
 
     .stButton > button {{
@@ -88,13 +102,6 @@ st.markdown(
         border-radius: 16px;
         font-weight: bold;
         padding: 0.7rem 1.6rem;
-        box-shadow: 0 8px 18px rgba(0,0,0,0.2);
-        transition: 0.3s ease;
-    }}
-
-    .stButton > button:hover {{
-        transform: scale(1.05);
-        box-shadow: 0 10px 24px rgba(0,0,0,0.25);
     }}
 
     .stDataFrame td, .stDataFrame th {{
